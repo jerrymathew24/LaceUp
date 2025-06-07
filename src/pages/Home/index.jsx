@@ -2,22 +2,32 @@ import { getAllProducts } from "../../api/getAllProducts";
 import { Navbar } from "../../components/Navbar";
 import { useEffect, useState } from "react";
 import { ProductCard } from "../../components/ProductCard";
+import { useCart } from "../../context/cart-context";
 
 export const Home = () => {
+  
+  console.log("🏠 Home component mounted");
   const [products, setProducts] = useState([]);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const data = await getAllProducts();
-        setProducts(data);
-      } catch (error) {
-        console.error("Error fetching products:", error);
-      }
-    };
+  const {cart} = useCart()
+  console.log("cartttt-array", {cart});
+  
 
-    fetchData();
-  }, []);
+useEffect(() => {
+  console.log("useEffect running"); // ✅ Debug
+  const fetchData = async () => {
+    try {
+      const data = await getAllProducts();
+      console.log("Data received:", data); // ✅ Debug
+      setProducts(data);
+    } catch (error) {
+      console.error("Error fetching products:", error);
+    }
+  };
+
+  fetchData();
+}, []);
+
 
   return (
     <>
