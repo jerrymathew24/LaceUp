@@ -1,8 +1,12 @@
 import { useCart } from "../../context/cart-context";
 import { findProductInCart } from "../../utils/findProductInCart";
+import { useNavigate } from "react-router-dom";
 
 export const ProductCard = ({ product }) => {
+
   const { cart, cartDispatch } = useCart();
+
+  const navigate = useNavigate();
 
   const isProductInCart = findProductInCart(cart, product.id)
 
@@ -10,12 +14,7 @@ export const ProductCard = ({ product }) => {
     !isProductInCart ? cartDispatch({
       type: "ADD_TO_CART",
       payload: { product },
-    }) : cartDispatch({
-      type: "REMOVE_FROM_CART",
-      payload: {
-        id:product.id
-      }
-    })
+    }) : navigate('/cart')
   };
 
   return (
