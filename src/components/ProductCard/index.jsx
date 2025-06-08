@@ -12,7 +12,7 @@ export const ProductCard = ({ product }) => {
   const navigate = useNavigate();
 
   const isProductInCart = findProductInCart(cart, product.id)
-  const isProductInWishlist = findProductInWishlist(wishlist, product.id )
+  const isProductInWishlist = findProductInWishlist(wishlist, product.id)
 
   const onCartClick = (product) => {
     !isProductInCart ? cartDispatch({
@@ -25,11 +25,9 @@ export const ProductCard = ({ product }) => {
     !isProductInWishlist ? wishlistDispatch({
       type: "ADD_TO_WISHLIST",
       payload: { product }
-    }) : (
-      <>
-      <h1>wishlist empty</h1>
-      </>
-    )
+    }) : navigate('/wishlist')
+    
+    console.log('wiishhlissttt on remove',wishlist);
   }
 
   return (
@@ -48,20 +46,28 @@ export const ProductCard = ({ product }) => {
         </h2>
 
         <p className="text-green-600 font-medium text-md">₹ {product.price}</p>
-        <button onClick={()=> onWishlistClick(product)} className="mt-2 bg-green-700 hover:bg-green-800 text-white py-2 px-4 rounded flex items-center justify-center gap-2 transition-colors">
-          <span className="material-symbols-outlined px-6 hover:cursor-pointer">
-            favorite
+        <button
+          onClick={() => onWishlistClick(product)}
+          className="mt-2 bg-green-700 hover:bg-green-800 text-white py-2 px-4 rounded flex items-center justify-center gap-2 transition-colors"
+        >
+          <span
+            className="material-symbols-outlined text-base hover:cursor-pointer"
+          >
+            {
+              isProductInWishlist ?  '':'favorite'
+            }
           </span>
-          Add To Wishlist
+          {isProductInWishlist ? "Go to Wishlist" : "Add To Wishlist"}
         </button>
+
         <button
           onClick={() => onCartClick(product)}
           className="mt-2 bg-green-700 hover:bg-green-800 text-white py-2 px-4 rounded flex items-center justify-center gap-2 transition-colors"
         >
-          <span className="material-symbols-outlined text-base">
-           {  
+          <span className="material-symbols-outlined text-base hover:cursor-pointer">
+            {
               isProductInCart ? 'shopping_cart_checkout' : 'shopping_cart'
-           }
+            }
           </span>
           {
             isProductInCart ? 'Go to Cart' : 'Add to Cart'

@@ -1,17 +1,34 @@
+import { useNavigate } from "react-router-dom";
 import { useCart } from "../../context/cart-context";
+import { useWishlist } from "../../context/wishlist-context";
+import { findProductInWishlist } from "../../utils/findProductInWishlist";
 
 
-export const HorizontalProductCard = ({ product }) => {
+export const CartProductCard = ({ product }) => {
 
-const {cartDispatch} = useCart()
+    const navigate = useNavigate()
+    const { cartDispatch } = useCart()
+    const { wishlist, wishlistDispatch } = useWishlist();
 
-    const onRemoveClick=(product)=>{
+    const isProductInWishlist = findProductInWishlist(wishlist, product.id)
+
+
+    const onRemoveClick = (product) => {
         cartDispatch({
-            type:'REMOVE_FROM_CART',
-            payload:{
-                id:product.id
+            type: 'REMOVE_FROM_CART',
+            payload: {
+                id: product.id
             }
         })
+    }
+
+    const onWishlistClick = (product) => {
+        !isProductInWishlist ? wishlistDispatch({
+            type: "ADD_TO_WISHLIST",
+            payload: { product }
+        }) : navigate('/wishlist')
+
+        console.log('wiishhlissttt on remove', wishlist);
     }
 
 
@@ -36,18 +53,25 @@ const {cartDispatch} = useCart()
                 </div>
                 <div className="flex flex-col sm:flex-row sm:items-center gap-2">
 
-                    <button onClick={()=>onRemoveClick(product)} className="mt-2 bg-green-700 hover:bg-green-800 text-white py-2 px-2 rounded flex items-center justify-center gap-2 transition-colors">
+                    <button onClick={() => onRemoveClick(product)} className="mt-2 bg-green-700 hover:bg-green-800 text-white py-2 px-2 rounded flex items-center justify-center gap-2 transition-colors">
                         <span className="material-symbols-outlined px-2 hover:cursor-pointer">
                             delete
                         </span>
                         Remove from Cart
                     </button>
-                    <button className="mt-2 bg-green-700 hover:bg-green-800 text-white py-2 px-2 rounded flex items-center justify-center gap-2 transition-colors">
-                        <span className="material-symbols-outlined px-2 hover:cursor-pointer">
-                            favorite
-                        </span>
-                        Add To Wishlist
-                    </button>
+                    <button
+          onClick={() => onWishlistClick(product)}
+          className="mt-2 bg-green-700 hover:bg-green-800 text-white py-2 px-4 rounded flex items-center justify-center gap-2 transition-colors"
+        >
+          <span
+            className="material-symbols-outlined text-base hover:cursor-pointer"
+          >
+            {
+              isProductInWishlist ?  '':'favorite'
+            }
+          </span>
+          {isProductInWishlist ? "Go to Wishlist" : "Add To Wishlist"}
+        </button>
 
                 </div>
             </div>

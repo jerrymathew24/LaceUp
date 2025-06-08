@@ -7,7 +7,6 @@ import { useWishlist } from "../../context/wishlist-context";
 
 export const Home = () => {
   
-  console.log("🏠 Home component mounted");
   const [products, setProducts] = useState([]);
 
   const {cart} = useCart()
@@ -15,15 +14,13 @@ export const Home = () => {
 
   const {wishlist} = useWishlist()
   console.log("wishlistttt-array", {wishlist});
-  
-  
+
 
 useEffect(() => {
-  console.log("useEffect running"); // ✅ Debug
   const fetchData = async () => {
     try {
       const data = await getAllProducts();
-      console.log("Data received:", data); // ✅ Debug
+      console.log("Data received:", data);
       setProducts(data);
     } catch (error) {
       console.error("Error fetching products:", error);
