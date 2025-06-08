@@ -1,30 +1,40 @@
-import { Navbar } from "../../components/Navbar"
-import { useCart } from "../../context/cart-context"
-import { HorizontalProductCard } from "../../components/HorizontalProductCard"
-import { PriceDetails } from "../../components/PriceDetails"
+import { Navbar } from "../../components/Navbar";
+import { useCart } from "../../context/cart-context";
+import { HorizontalProductCard } from "../../components/HorizontalProductCard";
+import { PriceDetails } from "../../components/PriceDetails";
+import { useNavigate } from "react-router-dom";
 
 export const Cart = () => {
-    const { cart } = useCart()
+  const { cart } = useCart();
+  const navigate = useNavigate()
 
-    return (
-        <>
-
-            <Navbar />
-            <main>
-                <h2 className="text-2xl text-center text-emerald-800 p-5">My Cart</h2>
-                <div className="flex justify-center gap-8">
-                <div className="">
-                    {
-                        cart?.length > 0 ? cart.map(product => <HorizontalProductCard key={product.id} product={product} />) : <p>Cart is empty, add product to cart.</p>
-                    }
-                </div>
-                <div className="">
-                    {
-                        <PriceDetails />
-                    }
-                </div>
-                </div>
-            </main>
-        </>
-    )
-}
+  return (
+    <>
+      <Navbar />
+      <main>
+        <h2 className="text-2xl text-center text-emerald-800 p-5">My Cart</h2>
+        {cart?.length > 0 ? (
+          <div className="flex justify-center gap-8">
+            <div>
+              {cart.map((product) => (
+                <HorizontalProductCard key={product.id} product={product} />
+              ))}
+            </div>
+            <div>
+              <PriceDetails />
+            </div>
+          </div>
+        ) : (
+            <>
+                
+          <h1 className="text-center text-3xl text-gray-600">Cart is empty</h1>
+          <button onClick={()=>navigate('/')} className="mx-auto mt-12 text-4xl bg-green-700 hover:bg-green-800 text-white py-4 px-6 rounded flex items-center justify-center gap-2 transition-colors hover:cursor-pointer ">
+                       
+                       SHOP NOW!!
+                    </button>
+            </>
+        )}
+      </main>
+    </>
+  );
+};

@@ -5,7 +5,7 @@ export const PriceDetails = () => {
 
     const {cart } = useCart()
     const totalCartAmount = getTotalCartAmount(cart)
-    const deliveryCharge = 49;
+    const deliveryCharge = 49
 
   return (
     <div className="bg-white shadow-md rounded-xl p-6 w-[400px] max-w-md mx-auto">

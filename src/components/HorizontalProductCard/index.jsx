@@ -1,4 +1,20 @@
+import { useCart } from "../../context/cart-context";
+
+
 export const HorizontalProductCard = ({ product }) => {
+
+const {cartDispatch} = useCart()
+
+    const onRemoveClick=(product)=>{
+        cartDispatch({
+            type:'REMOVE_FROM_CART',
+            payload:{
+                id:product.id
+            }
+        })
+    }
+
+
     return (
         <div className="flex bg-white shadow-md rounded-xl overflow-hidden w-full max-w-3xl mx-auto p-4 mb-4">
             <img
@@ -20,7 +36,7 @@ export const HorizontalProductCard = ({ product }) => {
                 </div>
                 <div className="flex flex-col sm:flex-row sm:items-center gap-2">
 
-                    <button className="mt-2 bg-green-700 hover:bg-green-800 text-white py-2 px-2 rounded flex items-center justify-center gap-2 transition-colors">
+                    <button onClick={()=>onRemoveClick(product)} className="mt-2 bg-green-700 hover:bg-green-800 text-white py-2 px-2 rounded flex items-center justify-center gap-2 transition-colors">
                         <span className="material-symbols-outlined px-2 hover:cursor-pointer">
                             delete
                         </span>
