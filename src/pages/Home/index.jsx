@@ -3,6 +3,7 @@ import { Navbar } from "../../components/Navbar";
 import { useEffect, useState } from "react";
 import { ProductCard } from "../../components/ProductCard";
 import { useCart } from "../../context/cart-context";
+import { useWishlist } from "../../context/wishlist-context";
 
 export const Home = () => {
   
@@ -11,6 +12,10 @@ export const Home = () => {
 
   const {cart} = useCart()
   console.log("cartttt-array", {cart});
+
+  const {wishlist} = useWishlist()
+  console.log("wishlistttt-array", {wishlist});
+  
   
 
 useEffect(() => {

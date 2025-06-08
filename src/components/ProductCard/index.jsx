@@ -1,14 +1,18 @@
 import { useCart } from "../../context/cart-context";
+import { useWishlist } from "../../context/wishlist-context";
 import { findProductInCart } from "../../utils/findProductInCart";
+import { findProductInWishlist } from "../../utils/findProductInWishlist";
 import { useNavigate } from "react-router-dom";
 
 export const ProductCard = ({ product }) => {
 
   const { cart, cartDispatch } = useCart();
+  const { wishlist, wishlistDispatch } = useWishlist();
 
   const navigate = useNavigate();
 
   const isProductInCart = findProductInCart(cart, product.id)
+  const isProductInWishlist = findProductInWishlist(wishlist, product.id )
 
   const onCartClick = (product) => {
     !isProductInCart ? cartDispatch({
@@ -16,6 +20,17 @@ export const ProductCard = ({ product }) => {
       payload: { product },
     }) : navigate('/cart')
   };
+
+  const onWishlistClick = (product) => {
+    !isProductInWishlist ? wishlistDispatch({
+      type: "ADD_TO_WISHLIST",
+      payload: { product }
+    }) : (
+      <>
+      <h1>wishlist empty</h1>
+      </>
+    )
+  }
 
   return (
     <div className="w-72 bg-white rounded-md shadow relative flex flex-col overflow-hidden hover:shadow-lg transition-shadow duration-300">
@@ -33,7 +48,7 @@ export const ProductCard = ({ product }) => {
         </h2>
 
         <p className="text-green-600 font-medium text-md">₹ {product.price}</p>
-        <button className="mt-2 bg-green-700 hover:bg-green-800 text-white py-2 px-4 rounded flex items-center justify-center gap-2 transition-colors">
+        <button onClick={()=> onWishlistClick(product)} className="mt-2 bg-green-700 hover:bg-green-800 text-white py-2 px-4 rounded flex items-center justify-center gap-2 transition-colors">
           <span className="material-symbols-outlined px-6 hover:cursor-pointer">
             favorite
           </span>
