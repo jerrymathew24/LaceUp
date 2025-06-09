@@ -2,42 +2,57 @@ import { getAllProducts } from "../../api/getAllProducts";
 import { Navbar } from "../../components/Navbar";
 import { useEffect, useState } from "react";
 import { ProductCard } from "../../components/ProductCard";
-import { useCart } from "../../context/cart-context";
-import { useWishlist } from "../../context/wishlist-context";
+import { getAllCategories } from "../../api/getAllCategories";
+import { getProductsByCategory } from "../../utils/getProductsByCategory";
+
 
 export const Home = () => {
-  
+
   const [products, setProducts] = useState([]);
-
-  const {cart} = useCart()
-  console.log("cartttt-array", {cart});
-
-  const {wishlist} = useWishlist()
-  console.log("wishlistttt-array", {wishlist});
+  const [categories, setCategories] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState('All')
 
 
-useEffect(() => {
-  const fetchData = async () => {
-    try {
-      const data = await getAllProducts();
-      console.log("Data received:", data);
-      setProducts(data);
-    } catch (error) {
-      console.error("Error fetching products:", error);
-    }
-  };
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const products = await getAllProducts();
+        setProducts(products);
+        const categories = await getAllCategories();
+        const updatedCategories = [...categories, {id:'1a', name:'All'}]
+        setCategories(updatedCategories)
+      } catch (error) {
+        console.error("Error fetching products:", error);
+      }
+    };
 
-  fetchData();
-}, []);
+    fetchData();
+  }, []);
+
+  const onCategoryClick = (category) => {
+    setSelectedCategory(category)
+  }
+
+  const filterByCategories = getProductsByCategory(products, selectedCategory)
 
 
   return (
     <>
       <Navbar />
-      <main className="flex flex-wrap justify-center gap-4 mt-6 bg-amber-50">
-        {
-            products?.length > 0 && products.map((product) => <ProductCard key={product.id} product={product} />)
-        }
+      <main className=''>
+        <div className="flex gap-2 px-3 mt-3 ">
+          {
+            categories?.length > 0 && categories.map(category => <div onClick={() => onCategoryClick(category.name)}>  <span class="inline-flex items-center px-3 py-1 text-sm font-medium text-white bg-green-600 hover:cursor-pointer rounded-full">
+              {category.name}
+            </span>
+            </div>)
+          }
+        </div>
+        <div className="flex flex-wrap justify-center gap-4 mt-6 bg-amber-50">
+          {
+            filterByCategories?.length > 0 ?( filterByCategories.map((product) => <ProductCard key={product.id} product={product} />)):(<h2>No Products found. Selected Category is Empty.</h2>)
+          }
+        </div>
       </main>
     </>
   );
