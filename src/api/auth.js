@@ -14,3 +14,20 @@ export const userLogin = async (email, password) => {
     return error;
   }
 };
+
+
+export const userSignUp = async (firstName, lastName, email, password) => {
+  const url ="https://api.escuelajs.co/api/v1/users/"
+  try {
+    const {data} = await axios.post(url, {
+      firstName: firstName,
+      lastName: lastName,
+      email:email,
+      password:password
+    })
+    console.log(data);
+    return data
+  } catch (error) {
+    return error
+  }
+}

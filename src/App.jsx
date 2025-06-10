@@ -2,8 +2,8 @@ import { Route, Routes } from "react-router-dom";
 import { Home } from "./pages/Home";
 import { Cart } from "./pages/Cart";
 import { Wishlist } from "./pages/Wishlist";
-import { Login } from "./components/Login";
 import { AuthLogin } from "./pages/AuthLogin";
+import { AuthSignUp } from "./pages/AuthSignUp";
 
 function App() {
   return (
@@ -13,6 +13,7 @@ function App() {
         <Route path="/cart" element={<Cart />} />
         <Route path="/wishlist" element={<Wishlist />} />
         <Route path="/auth/login" element={<AuthLogin />} />
+        <Route path="/auth/signUp" element={<AuthSignUp />} />
       </Routes>
     </div>
   );

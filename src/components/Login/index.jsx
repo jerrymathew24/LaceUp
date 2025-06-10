@@ -1,9 +1,9 @@
-import { useLogin } from "../../context/loginContext";
+import { useAuth } from "../../context/auth-context";
 import { userLogin } from "../../api/auth";
 import { useNavigate } from "react-router-dom";
 
 export const Login = () => {
-  const { email, password, loginDispatch } = useLogin();
+  const { email, password, loginDispatch } = useAuth();
   const navigate = useNavigate()
 
   const onFormSubmit = async (e) => {
