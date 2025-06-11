@@ -5,19 +5,18 @@ const AuthContext = createContext();
 
 const AuthProvider = ({ children }) => {
   const initialState = {
-    firstName: "",
-    lastName: "",
+    name: "",
     email: "",
     password: "",
     token: "",
   };
 
-  const [{ firstName, lastName, email, password, token }, authDispatch] =
+  const [{ name, email, password, token }, authDispatch] =
     useReducer(AuthReducer, initialState);
 
   return (
     <AuthContext.Provider
-      value={{ firstName, lastName, email, password, token, authDispatch }}
+      value={{ name, email, password, token, authDispatch }}
     >
       {children}
     </AuthContext.Provider>

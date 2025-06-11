@@ -1,5 +1,10 @@
 export const AuthReducer = (state, { type, payload }) => {
   switch (type) {
+    case "NAME":
+      return {
+        ...state,
+        name: payload.value,
+      };
     case "EMAIL":
       return {
         ...state,
@@ -17,19 +22,23 @@ export const AuthReducer = (state, { type, payload }) => {
       };
     case "LOGOUT":
       return {
+        name: "",
         email: "",
         password: "",
         token: "",
       };
-    case "FIRSTNAME":
+    case "RESET_SIGNUP_FORM":
       return {
         ...state,
-        firstName: payload.value,
+        name: "",
+        email: "",
+        password: "",
       };
-    case "LASTNAME":
+    case "RESET_LOGIN_FORM":
       return {
         ...state,
-        lastName: payload.value,
+        email: "",
+        password: "",
       };
     default:
       return state;

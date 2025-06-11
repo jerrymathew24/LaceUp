@@ -4,7 +4,7 @@ import { useAuth } from "../../context/auth-context";
 
 export const Navbar = () => {
   const [isAccountDropDownOpen, setIsAccountDropDownOpen] = useState(false);
-  const { token, loginDispatch } = useAuth();
+  const { token, authDispatch } = useAuth();
   const navigate = useNavigate();
 
   const onLoginClick = () => {
@@ -13,7 +13,7 @@ export const Navbar = () => {
   };
 
   const onLogoutClick = () => {
-    loginDispatch({
+    authDispatch({
       type: "LOGOUT",
     });
     navigate("/auth/login");

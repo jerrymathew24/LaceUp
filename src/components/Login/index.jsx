@@ -3,25 +3,34 @@ import { userLogin } from "../../api/auth";
 import { useNavigate } from "react-router-dom";
 
 export const Login = () => {
-  const { email, password, loginDispatch } = useAuth();
-  const navigate = useNavigate()
-
+  const { email, password, authDispatch } = useAuth();
+  const navigate = useNavigate();
   const onFormSubmit = async (e) => {
     e.preventDefault();
     const data = await userLogin(email, password);
-    loginDispatch({
-      type: "TOKEN",
-      payload: {
-        token: data,
-      },
-    });
-    if(data.access_token){
-       navigate('/')
+
+    if (data?.access_token) {
+      authDispatch({
+        type: "TOKEN",
+        payload: {
+          token: data,
+        },
+      });
+      navigate("/");
+    } else {
+      authDispatch({
+        type: "RESET_LOGIN_FORM",
+        payload: {
+          email: "",
+          password: "",
+        },
+      });
+      alert("Login failed. Please check your email or password.");
     }
   };
 
   const onEmailChange = (e) => {
-    loginDispatch({
+    authDispatch({
       type: "EMAIL",
       payload: {
         value: e.target.value,
@@ -30,7 +39,7 @@ export const Login = () => {
   };
 
   const onPasswordChange = (e) => {
-    loginDispatch({
+    authDispatch({
       type: "PASSWORD",
       payload: {
         value: e.target.value,
@@ -44,6 +53,7 @@ export const Login = () => {
       <div className="flex flex-col gap-2">
         <span>Email *</span>
         <input
+          value={email}
           onChange={onEmailChange}
           className="border-b-2"
           type="email"
@@ -54,6 +64,7 @@ export const Login = () => {
       <div className="flex flex-col gap-2">
         <span>Password *</span>
         <input
+          value={password}
           onChange={onPasswordChange}
           className="border-b-2"
           type="password"
@@ -61,9 +72,16 @@ export const Login = () => {
           placeholder="Password"
         />
       </div>
-      <div className="mx-4">
+      <div className="flex justify-between mx-4 mt-6">
         <button className="mt-2 bg-green-700 hover:bg-green-800 text-white py-2 px-4 rounded flex items-center justify-center gap-2 transition-colors">
           Login
+        </button>
+        <button
+          onClick={() => navigate("/auth/signUp")}
+          type="button"
+          className="mt-2 bg-green-700 hover:bg-green-800 text-white py-2 px-4 rounded flex items-center justify-center gap-2 transition-colors"
+        >
+          Sign Up
         </button>
       </div>
     </form>

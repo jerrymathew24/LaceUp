@@ -5,7 +5,7 @@ export const AuthLogin = () => {
   return (
     <>
       <Navbar />
-      <main className="flex justify-center mt-36">
+      <main className="flex justify-center mt-12">
       <Login />
       </main>
     </>

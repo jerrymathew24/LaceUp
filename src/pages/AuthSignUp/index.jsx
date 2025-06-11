@@ -5,7 +5,7 @@ export const AuthSignUp = () => {
   return (
     <>
       <Navbar />
-      <main className="flex justify-center mt-12">
+      <main className="flex justify-center mt-1">
         <SignUp />
       </main>
     </>
