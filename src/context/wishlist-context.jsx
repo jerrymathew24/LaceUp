@@ -5,7 +5,7 @@ const WishlistContext = createContext();
 
 
 const initialState = {
-    wishlist: []
+    wishlist: JSON.parse(localStorage.getItem('wishlist')) || []
 }
 
 const WishlistProvider = ({ children })=> {

@@ -5,30 +5,39 @@ import { findProductInWishlist } from "../../utils/findProductInWishlist";
 import { useNavigate } from "react-router-dom";
 
 export const ProductCard = ({ product }) => {
-
   const { cart, cartDispatch } = useCart();
   const { wishlist, wishlistDispatch } = useWishlist();
 
   const navigate = useNavigate();
 
-  const isProductInCart = findProductInCart(cart, product.id)
-  const isProductInWishlist = findProductInWishlist(wishlist, product.id)
+  const isProductInCart = findProductInCart(cart, product.id);
+  const isProductInWishlist = findProductInWishlist(wishlist, product.id);
 
   const onCartClick = (product) => {
-    !isProductInCart ? cartDispatch({
-      type: "ADD_TO_CART",
-      payload: { product },
-    }) : navigate('/cart')
+    if (!isProductInCart) {
+      localStorage.setItem("cart", JSON.stringify([...cart, product]));
+      cartDispatch({
+        type: "ADD_TO_CART",
+        payload: { product },
+      });
+    } else {
+      navigate("/cart");
+    }
   };
 
   const onWishlistClick = (product) => {
-    !isProductInWishlist ? wishlistDispatch({
-      type: "ADD_TO_WISHLIST",
-      payload: { product }
-    }) : navigate('/wishlist')
-    
-    console.log('wiishhlissttt on remove',wishlist);
-  }
+    if (!isProductInWishlist) {
+      localStorage.setItem("wishlist", JSON.stringify([...wishlist, product]));
+      wishlistDispatch({
+        type: "ADD_TO_WISHLIST",
+        payload: { product },
+      });
+    } else {
+      navigate("/wishlist");
+    }
+
+    console.log("wiishhlissttt on remove", wishlist);
+  };
 
   return (
     <div className="w-72 bg-white rounded-md shadow relative flex flex-col overflow-hidden hover:shadow-lg transition-shadow duration-300">
@@ -50,12 +59,8 @@ export const ProductCard = ({ product }) => {
           onClick={() => onWishlistClick(product)}
           className="mt-2 bg-green-700 hover:bg-green-800 text-white py-2 px-4 rounded flex items-center justify-center gap-2 transition-colors"
         >
-          <span
-            className="material-symbols-outlined text-base hover:cursor-pointer"
-          >
-            {
-              isProductInWishlist ?  '':'favorite'
-            }
+          <span className="material-symbols-outlined text-base hover:cursor-pointer">
+            {isProductInWishlist ? "" : "favorite"}
           </span>
           {isProductInWishlist ? "Go to Wishlist" : "Add To Wishlist"}
         </button>
@@ -65,13 +70,9 @@ export const ProductCard = ({ product }) => {
           className="mt-2 bg-green-700 hover:bg-green-800 text-white py-2 px-4 rounded flex items-center justify-center gap-2 transition-colors"
         >
           <span className="material-symbols-outlined text-base hover:cursor-pointer">
-            {
-              isProductInCart ? 'shopping_cart_checkout' : 'shopping_cart'
-            }
+            {isProductInCart ? "shopping_cart_checkout" : "shopping_cart"}
           </span>
-          {
-            isProductInCart ? 'Go to Cart' : 'Add to Cart'
-          }
+          {isProductInCart ? "Go to Cart" : "Add to Cart"}
         </button>
       </div>
     </div>

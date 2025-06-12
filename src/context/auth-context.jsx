@@ -8,7 +8,7 @@ const AuthProvider = ({ children }) => {
     name: "",
     email: "",
     password: "",
-    token: "",
+    token: {access_token: localStorage.getItem('token') || '', refresh_token:''},
   };
 
   const [{ name, email, password, token }, authDispatch] =
