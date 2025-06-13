@@ -42,7 +42,7 @@ export const Home = () => {
       <main className=''>
         <div className="flex gap-2 px-3 mt-3 ">
           {
-            categories?.length > 0 && categories.map(category => <div onClick={() => onCategoryClick(category.name)}>  <span class="inline-flex items-center px-3 py-1 text-sm font-medium text-white bg-green-600 hover:cursor-pointer rounded-full">
+            categories?.length > 0 && categories.map(category => <div onClick={() => onCategoryClick(category.name)}>  <span className="inline-flex items-center px-3 py-1 text-sm font-medium text-white bg-green-600 hover:cursor-pointer rounded-full">
               {category.name}
             </span>
             </div>)

@@ -21,7 +21,7 @@ export const userLogin = async (email, password) => {
       email,
       password,
       avatar: "https://api.lorem.space/image/face?w=150&h=150",
-      role: "customer", // REQUIRED to avoid 500
+      role: "customer",
     });
     console.log("Signup Success:", data);
     return data;
