@@ -1,14 +1,7 @@
-import { useNavigate } from "react-router-dom";
 import { useCart } from "../../context/cart-context";
-import { useWishlist } from "../../context/wishlist-context";
-import { findProductInWishlist } from "../../utils/findProductInWishlist";
 
 export const CartProductCard = ({ product }) => {
-  const navigate = useNavigate();
   const { cartDispatch } = useCart();
-  const { wishlist, wishlistDispatch } = useWishlist();
-
-  const isProductInWishlist = findProductInWishlist(wishlist, product.id);
 
   const onRemoveClick = (product) => {
     cartDispatch({

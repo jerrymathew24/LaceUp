@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { ProductCard } from "../../components/ProductCard";
 import { getAllCategories } from "../../api/getAllCategories";
 import { getProductsByCategory } from "../../utils/getProductsByCategory";
+import { Footer } from "../../components/Footer";
 
 
 export const Home = () => {
@@ -54,6 +55,7 @@ export const Home = () => {
           }
         </div>
       </main>
+      <Footer />
     </>
   );
 };

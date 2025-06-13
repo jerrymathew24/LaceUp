@@ -2,6 +2,7 @@ import { Navbar } from "../../components/Navbar";
 import { useNavigate } from "react-router-dom";
 import { useWishlist } from "../../context/wishlist-context";
 import { WishlistProductCard } from "../../components/WishlistProductCard/index.jsx";
+import { Footer } from "../../components/Footer/index.jsx";
 
 export const Wishlist = () => {
   const { wishlist } = useWishlist()
@@ -31,6 +32,7 @@ export const Wishlist = () => {
             </>
         )}
       </main>
+      <Footer />
     </>
   );
 };

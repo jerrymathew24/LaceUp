@@ -12,6 +12,7 @@ export const PriceDetails = () => {
   console.log("Current Address:", address);
 
   const navigate = useNavigate();
+  const email = localStorage.getItem("email");
 
   const totalCartAmount = getTotalCartAmount(cart);
   const deliveryCharge = 49;
@@ -45,7 +46,8 @@ export const PriceDetails = () => {
       image:
         "https://therightfit.netlify.app/assets/The%20Right%20Fit-logos.jpeg",
       handler: ({ payment_id }) => {
-        cartDispatch({ type: "CLEAR" });
+        cartDispatch({ type: "RESET_CART" });
+        localStorage.removeItem(`${email}_cart`);
         navigate("/");
       },
     };
@@ -53,7 +55,6 @@ export const PriceDetails = () => {
     const paymentObject = new window.Razorpay(options);
     paymentObject.open();
   };
-
 
   const handleAddressSubmit = (data) => {
     addressDispatch({ type: "SET_ADDRESS", payload: data });

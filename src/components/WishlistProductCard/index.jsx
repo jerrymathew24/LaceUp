@@ -1,16 +1,8 @@
-import { useNavigate } from "react-router-dom";
-import { useCart } from "../../context/cart-context";
 import { useWishlist } from "../../context/wishlist-context";
-import { findProductInCart } from "../../utils/findProductInCart";
 
 export const WishlistProductCard = ({ product }) => {
-  const navigate = useNavigate();
-
-  const { cart, cartDispatch } = useCart();
-
   const { wishlistDispatch, wishlist } = useWishlist();
 
-  const isProductInCart = findProductInCart(cart, product.id);
 
   const onRemoveClick = (product) => {
     wishlistDispatch({
@@ -23,14 +15,7 @@ export const WishlistProductCard = ({ product }) => {
     console.log("wiishhlissttt on remove", wishlist);
   };
 
-  const onCartClick = (product) => {
-    !isProductInCart
-      ? cartDispatch({
-          type: "ADD_TO_CART",
-          payload: { product },
-        })
-      : navigate("/cart");
-  };
+
 
   return (
     <div className="flex bg-white shadow-md rounded-xl overflow-hidden w-full max-w-3xl mx-auto p-4 mb-4">

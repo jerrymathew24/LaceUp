@@ -3,7 +3,7 @@ import { useCart } from "../../context/cart-context";
 import { CartProductCard } from "../../components/CartProductCard.jsx";
 import { PriceDetails } from "../../components/PriceDetails";
 import { useNavigate } from "react-router-dom";
-import { AddressForm } from "../../components/addressForm/index.jsx";
+import { Footer } from "../../components/Footer/index.jsx";
 
 export const Cart = () => {
   const { cart } = useCart();
@@ -39,6 +39,7 @@ export const Cart = () => {
           </>
         )}
       </main>
+      <Footer />
     </>
   );
 };

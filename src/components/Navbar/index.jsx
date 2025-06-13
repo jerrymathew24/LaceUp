@@ -79,12 +79,12 @@ const onLogoutClick = () => {
         </div>
 
         <div
-          className="relative"
+          className="relative flex flex-col"
           onClick={() => setIsAccountDropDownOpen(!isAccountDropDownOpen)}
         >
           <span className="material-symbols-outlined px-6 hover:cursor-pointer">
             account_circle
-          </span>{token?.access_token && <span className="text-sm px-2">{email}</span>}
+          </span>{token?.access_token && <span className="text-sm px-2 hover:cursor-pointer">{email}</span>}
 
           {isAccountDropDownOpen && (
             <div className="absolute right-0 top-full mt-1 w-48 bg-amber-50 rounded-md shadow-lg z-10">
