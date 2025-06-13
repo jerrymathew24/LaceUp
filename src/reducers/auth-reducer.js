@@ -40,6 +40,7 @@ export const AuthReducer = (state, { type, payload }) => {
         email: "",
         password: "",
       };
+
     default:
       return state;
   }

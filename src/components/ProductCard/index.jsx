@@ -15,7 +15,18 @@ export const ProductCard = ({ product }) => {
 
   const onCartClick = (product) => {
     if (!isProductInCart) {
-      localStorage.setItem("cart", JSON.stringify([...cart, product]));
+      if (isProductInWishlist) {
+        const updatedWishlist = wishlist.filter(
+          (item) => item.id !== product.id
+        );
+        localStorage.setItem("wishlist", JSON.stringify(updatedWishlist));
+        wishlistDispatch({
+          type: "REMOVE_FROM_WISHLIST",
+          payload: { id: product.id },
+        });
+      }
+      const updatedCart = [...cart, product];
+      localStorage.setItem("cart", JSON.stringify(updatedCart));
       cartDispatch({
         type: "ADD_TO_CART",
         payload: { product },
@@ -26,8 +37,18 @@ export const ProductCard = ({ product }) => {
   };
 
   const onWishlistClick = (product) => {
+
     if (!isProductInWishlist) {
-      localStorage.setItem("wishlist", JSON.stringify([...wishlist, product]));
+      if (isProductInCart) {
+        const updatedCart = cart.filter((item) => item.id !== product.id);
+        localStorage.setItem("cart", JSON.stringify(updatedCart));
+        cartDispatch({
+          type: "REMOVE_FROM_CART",
+          payload: { id: product.id },
+        });
+      }
+      const updatedWishlist = [...wishlist, product];
+      localStorage.setItem("wishlist", JSON.stringify(updatedWishlist));
       wishlistDispatch({
         type: "ADD_TO_WISHLIST",
         payload: { product },
@@ -36,7 +57,7 @@ export const ProductCard = ({ product }) => {
       navigate("/wishlist");
     }
 
-    console.log("wiishhlissttt on remove", wishlist);
+    console.log("Wishlist after update", wishlist);
   };
 
   return (

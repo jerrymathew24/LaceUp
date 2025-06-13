@@ -1,35 +1,48 @@
 import { useAuth } from "../../context/auth-context";
 import { userLogin } from "../../api/auth";
 import { useNavigate } from "react-router-dom";
+import { useCart } from "../../context/cart-context";
+import { useWishlist } from "../../context/wishlist-context";
 
 export const Login = () => {
+  const { cartDispatch } = useCart();
+  const { wishlistDispatch } = useWishlist();
   const { email, password, authDispatch } = useAuth();
   const navigate = useNavigate();
+
   const onFormSubmit = async (e) => {
-    e.preventDefault();
-    const data = await userLogin(email, password);
-    if (Object.keys(data)?.length > 0) {
-      localStorage.setItem("token", data.access_token);
-    }
-    if (data?.access_token) {
-      authDispatch({
-        type: "TOKEN",
-        payload: {
-          token: data,
-        },
-      });
-      navigate("/");
-    } else {
-      authDispatch({
-        type: "RESET_LOGIN_FORM",
-        payload: {
-          email: "",
-          password: "",
-        },
-      });
-      alert("Login failed. Please check your email or password.");
-    }
-  };
+  e.preventDefault();
+  const data = await userLogin(email, password);
+
+  if (data?.access_token) {
+    localStorage.setItem("token", data.access_token);
+    localStorage.setItem("email", email);
+
+    const savedCart = JSON.parse(localStorage.getItem(`cart_${email}`)) || [];
+    const savedWishlist = JSON.parse(localStorage.getItem(`wishlist_${email}`)) || [];
+
+    cartDispatch({ type: "INITIALIZE_CART", payload: savedCart });
+    wishlistDispatch({ type: "INITIALIZE_WISHLIST", payload: savedWishlist });
+
+    authDispatch({
+      type: "TOKEN",
+      payload: {
+        token: data,
+      },
+    });
+
+    navigate("/");
+  } else {
+    authDispatch({
+      type: "RESET_LOGIN_FORM",
+      payload: {
+        email: "",
+        password: "",
+      },
+    });
+    alert("Login failed. Please check your email or password.");
+  }
+};
 
   const onEmailChange = (e) => {
     authDispatch({

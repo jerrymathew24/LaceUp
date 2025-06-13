@@ -30,21 +30,18 @@ export const SignUp = () => {
       },
     });
 
-
   const onFormSubmit = async (e) => {
     e.preventDefault();
     try {
       const data = await userSignUp(name, email, password);
       if (data?.id) {
         alert("Signup successful! Please log in.");
+        authDispatch({ type: "RESET_SIGNUP_FORM" });
         navigate("/auth/login");
       } else {
-      authDispatch({
-        type: "RESET_SIGNUP_FORM",
-        payload: {
-          name: "",
-          email: "",
-          password: ""}})
+        authDispatch({
+          type: "RESET_SIGNUP_FORM",
+        });
         alert("Signup failed. Try again.");
       }
     } catch (error) {
@@ -102,7 +99,10 @@ export const SignUp = () => {
         </button>
         <button
           type="button"
-          onClick={() => navigate("/auth/login")}
+          onClick={() => {
+            authDispatch({ type: "RESET_SIGNUP_FORM" });
+            navigate("/auth/login");
+          }}
           className="bg-green-700 hover:bg-green-800 text-white py-2 px-4 rounded transition-colors"
         >
           Login

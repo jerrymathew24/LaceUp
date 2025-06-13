@@ -1,29 +1,58 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/auth-context";
+import { useCart } from "../../context/cart-context";
+import { useWishlist } from "../../context/wishlist-context";
 
 export const Navbar = () => {
   const [isAccountDropDownOpen, setIsAccountDropDownOpen] = useState(false);
   const { token, authDispatch } = useAuth();
+  const { cart, cartDispatch } = useCart();
+  const { wishlist, wishlistDispatch } = useWishlist();
   const navigate = useNavigate();
+  const email = localStorage.getItem("email");
+
+
 
   const onLoginClick = () => {
     navigate("/auth/login");
     setIsAccountDropDownOpen(false);
-  };
 
-  const onLogoutClick = () => {
-    authDispatch({
-      type: "LOGOUT",
-    });
-    navigate("/auth/login");
-    setIsAccountDropDownOpen(false);
-  };
+    localStorage.setItem("email", email);
 
-  const onSignUpClick = () => {
-    navigate("/auth/signup");
-    setIsAccountDropDownOpen(false);
+const savedCart = JSON.parse(localStorage.getItem(`cart_${email}`)) || [];
+const savedWishlist = JSON.parse(localStorage.getItem(`wishlist_${email}`)) || [];
+
+cartDispatch({ type: "INITIALIZE_CART", payload: savedCart });
+wishlistDispatch({ type: "INITIALIZE_WISHLIST", payload: savedWishlist });
+
   };
+const onLogoutClick = () => {
+  const email = localStorage.getItem("email");
+
+  if (email) {
+    localStorage.setItem(`cart_${email}`, JSON.stringify(cart));
+    localStorage.setItem(`wishlist_${email}`, JSON.stringify(wishlist));
+  }
+
+  authDispatch({ type: "LOGOUT" });
+  cartDispatch({ type: "RESET_CART" });
+  wishlistDispatch({ type: "RESET_WISHLIST" });
+
+  localStorage.removeItem("token");
+  localStorage.removeItem("email");
+
+  navigate("/auth/login");
+  setIsAccountDropDownOpen(false);
+};
+
+
+ const onSignUpClick = () => {
+  authDispatch({ type: "RESET_SIGNUP_FORM" });
+  setIsAccountDropDownOpen(false);
+  navigate("/auth/signup");
+};
+
 
   return (
     <header className="flex justify-between bg-green-900 text-amber-100 p-4">
@@ -34,25 +63,29 @@ export const Navbar = () => {
         LaceUp
       </div>
       <nav className="ml-auto flex gap-2 self-center">
-        <span
+        <div
+          className="flex flex-col items-center px-6 hover:cursor-pointer"
           onClick={() => navigate("/cart")}
-          className="material-symbols-outlined px-6 hover:cursor-pointer"
         >
-          shopping_cart
-        </span>
-        <span
+          <span className="material-symbols-outlined ">shopping_cart</span>
+          {token?.access_token && <span className="text-sm px-2">{cart.length}</span>}
+        </div>
+        <div
+          className="flex flex-col items-center px-6 hover:cursor-pointer"
           onClick={() => navigate("/wishlist")}
-          className="material-symbols-outlined px-6 hover:cursor-pointer"
         >
-          favorite
-        </span>
-        <div className="relative">
-          <span
-            onClick={() => setIsAccountDropDownOpen(!isAccountDropDownOpen)}
-            className="material-symbols-outlined px-6 hover:cursor-pointer"
-          >
+          <span className="material-symbols-outlined">favorite</span>
+          {token?.access_token && <span className="text-sm px-2">{wishlist.length}</span>}
+        </div>
+
+        <div
+          className="relative"
+          onClick={() => setIsAccountDropDownOpen(!isAccountDropDownOpen)}
+        >
+          <span className="material-symbols-outlined px-6 hover:cursor-pointer">
             account_circle
-          </span>
+          </span>{token?.access_token && <span className="text-sm px-2">{email}</span>}
+
           {isAccountDropDownOpen && (
             <div className="absolute right-0 top-full mt-1 w-48 bg-amber-50 rounded-md shadow-lg z-10">
               <div className="p-1 space-y-1">

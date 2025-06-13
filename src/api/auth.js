@@ -7,27 +7,30 @@ export const userLogin = async (email, password) => {
       email: email,
       password: password,
     });
-    console.log({data});
-    
-    return data
+    console.log({ data });
+
+    return data;
   } catch (error) {
     return error;
   }
-};
-
-
-export const userSignUp = async (name, email, password) => {
-  const url ="https://api.escuelajs.co/api/v1/users/"
- try {
+};export const userSignUp = async (name, email, password) => {
+  const url = "https://api.escuelajs.co/api/v1/users/";
+  try {
     const { data } = await axios.post(url, {
-      name: name,
-      email: email,
-      password: password,
-      avatar: "https://api.lorem.space/image/face?w=150&h=150"
+      name,
+      email,
+      password,
+      avatar: "https://api.lorem.space/image/face?w=150&h=150",
+      role: "customer", // REQUIRED to avoid 500
     });
-    console.log({data});
-    return data
+    console.log("Signup Success:", data);
+    return data;
   } catch (error) {
-    return error
+    if (axios.isAxiosError(error)) {
+      console.error("Signup API Error:", error.response?.data || error.message);
+    } else {
+      console.error("Unexpected Signup Error:", error);
+    }
+    return null;
   }
-}
+};

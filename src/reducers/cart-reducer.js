@@ -10,11 +10,17 @@ export const cartReducer = (state, { type, payload }) => {
         ...state,
         cart: state.cart.filter((product) => product.id !== payload.id),
       };
-    case "CLEAR":
+    case "RESET_CART":
       return {
         ...state,
         cart: [],
       };
+    case "INITIALIZE_CART":
+      return {
+        ...state,
+        cart: payload,
+      };
+
     default:
       return state;
   }
